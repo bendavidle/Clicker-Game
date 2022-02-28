@@ -2,6 +2,11 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  user-select: none;
+}
+
+li {
+  list-style: none;
 }
 
 html,
@@ -28,6 +33,19 @@ body {
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.75);
 }
 
+.current-location {
+  position: absolute;
+  left: 1rem;
+  line-height: 5vh;
+}
+
+.currency {
+  color: gold;
+  position: absolute;
+  right: 1rem;
+  line-height: 5vh;
+}
+
 .tab {
   text-align: center;
   width: 10vw;
@@ -39,6 +57,75 @@ body {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.05);
   transition: 100ms;
+}
+
+.home {
+  margin: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  height: 100%;
+}
+
+.enemy {
+  text-align: center;
+  background-color: rgb(26, 26, 26);
+  padding: 1.5rem;
+  width: 30vw;
+  border-radius: 5px;
+  transition: 100ms;
+}
+
+.location {
+  text-align: center;
+  background-color: rgb(26, 26, 26);
+  padding: 1.5rem;
+  width: 30vw;
+  border-radius: 5px;
+  transition: 100ms;
+}
+
+.selected {
+  border: 2px solid gold;
+}
+
+.enemy:hover {
+  transform: scale(1.05);
+  transition: 200ms;
+}
+
+.location:hover {
+  transform: scale(1.05);
+  transition: 200ms;
+}
+
+.selected:hover {
+  transform: none;
+}
+
+.menu {
+  display: flex;
+  font-size: 3rem;
+  flex-direction: column;
+  gap: 2rem;
+  flex-grow: 4;
+  justify-content: stretch;
+}
+
+.menu-choice {
+  height: 10vh;
+  width: 60vw;
+  border-radius: 5px;
+  background-color: rgb(26, 26, 26);
+  text-align: center;
+  line-height: 10vh;
+  transition: 100ms;
+}
+
+.menu-choice:hover {
+  transform: scale(1.05);
+  transition: 200ms;
 }
 
 .char-select {
