@@ -93,9 +93,13 @@ function calculateLevel() {
   for (let i = 0; i < game.experienceList.length; i++) {
     const expRequired = game.experienceList[i];
     if (game.stats.xp <= expRequired) {
-      setTimeout(() => {
-        alert(`You level up!`);
-      }, 120);
+      if (i >= currentLevel) {
+        console.log(i, currentLevel);
+        setTimeout(() => {
+          alert(`You level up!`);
+        }, 120);
+      }
+
       game.chosenCharacter.baseAttack += i;
       game.chosenCharacter.maxHealth += i * 4;
       return i;
@@ -183,5 +187,6 @@ function setLevel() {
   game.stats.level = level;
   game.chosenCharacter.baseAttack += Math.ceil(parseInt(level * 2));
   game.stats.maxHealth += parseInt(level) * 4;
+  game.stats.xp = game.experienceList[level];
   renderCurrentPage();
 }
