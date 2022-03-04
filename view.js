@@ -1,12 +1,11 @@
 function header() {
-  let location = game.chosenCharacter ? `<div class="current-location">Current Location: ${game.currentLocation.name} Lvl: ${game.stats.level}</div>` : "";
+  let location = game.chosenCharacter ? `<div class="current-location">Current Location: ${game.currentLocation.name} Lvl: ${game.stats.level} Day: ${game.day}</div>` : "";
   let gold = game.chosenCharacter ? `<div class="currency">Gold: ${game.stats.gold}</div>` : "";
   let html = /*HTML*/ `
     <div class="header">
       ${location}
       ${gold}
       <div class="tab" onclick="changePage('home')">Home</div>
-      <div class="tab" onclick="changePage('inventory')">Inventory</div>
       <div class="tab" onclick="changePage('stats')">Stats</div>
       <div class="tab" onclick="changePage('settings')">Settings</div>
     </div>
@@ -14,11 +13,26 @@ function header() {
   return html;
 }
 
+function footer() {
+  let html = /*HTML*/ `
+    <div class="footer">
+      <div class="health" style="width: ${(game.stats.health / game.stats.maxHealth) * 100}%"><tt>hp</tt></div>
+      
+      <div class="energy" style="width: ${(game.stats.energy / game.stats.maxEnergy) * 100}%"><tt>energy</tt></div>
+    </div>
+  `;
+
+  if (game.chosenCharacter) {
+    return html;
+  }
+}
+
 function show(tab) {
   const app = document.getElementById("app");
   app.innerHTML = `
     ${header()}
     ${tab}
+    ${footer()}
   `;
 }
 
@@ -36,7 +50,7 @@ function home() {
           <div class="menu-choice" onclick="changePage('adventure')">Adventure</div>
           ${shop}
           ${fight}
-          <div class="menu-choice">Rest for the day</div>
+          <div class="menu-choice" onclick="rest(${game.currentLocation.canFight})">Rest ${game.currentLocation.canFight ? "<span class='dangerous'>danger!</span>" : ""}</div>
         </div>
       </div>
     `;
@@ -60,15 +74,6 @@ function home() {
       </div>
     `;
   }
-  return html;
-}
-
-function inventory() {
-  let html = /*HTML*/ `
-    <div class="inventory">
-      <p>This is inventory</p>
-    </div>
-  `;
   return html;
 }
 
@@ -102,6 +107,7 @@ function adventure() {
           <div class="location"  onclick="changeLocation(${location.id})">
             <p>${location.name}</p>
             <p>Lvl required: ${location.requiredLevel}</p>
+            <p>Travel Cost: ${location.travelCost}</p>
           </div>
       `;
     } else {
@@ -109,6 +115,7 @@ function adventure() {
           <div class="location selected"">
             <p>${location.name}</p>
             <p>Lvl required: ${location.requiredLevel}</p>
+            <p>Travel Cost: ${location.travelCost}</p>
           </div>
       `;
     }
@@ -131,7 +138,7 @@ function battle() {
   for (let i = 0; i < currentLocation.enemies.length; i++) {
     const enemy = currentLocation.enemies[i];
     battleHTML += /*HTML*/ `
-      <div class="enemy">
+      <div class="enemy" onclick="setBattle(${enemy.id})">
         <p>${enemy.name}</p>
         <p>HP: ${enemy.maxhp}</p>
         <p>Lvl: ${enemy.requiredLevel}</p>
@@ -149,15 +156,33 @@ function battle() {
   return html;
 }
 
+function fight() {
+  if (game.currentEnemy) {
+    let html = /*HTML*/ `
+    <div class="fight">
+      <div class="player">
+        <p>${game.chosenCharacter.name}</p>
+        <div class="health" style="width: ${(game.stats.health / game.stats.maxHealth) * 100}%"></div>
+      </div>
+      <div class="opponent">
+        <p>${game.currentEnemy.name}</p>
+        <div class="health" style="width: ${(game.currentEnemy.hp / game.currentEnemy.maxhp) * 100}%"></div>
+      </div>
+      <div class="attack" onclick="attack()">
+        <p>ATTACK</p>
+      </div>
+    </div>
+  `;
+    return html;
+  }
+  console.log("hello");
+}
+
 function changePage(page) {
   switch (page) {
     case "home":
       show(home());
       view.currentPage = "home";
-      break;
-    case "inventory":
-      show(inventory());
-      view.currentPage = "inventory";
       break;
     case "stats":
       show(stats());
@@ -171,10 +196,13 @@ function changePage(page) {
       show(adventure());
       view.currentPage = "adventure";
       break;
-
     case "battle":
       show(battle());
       view.currentPage = "battle";
+      break;
+    case "fight":
+      show(fight());
+      view.currentPage = "fight";
       break;
     default:
       show(home());
@@ -187,4 +215,4 @@ function renderCurrentPage() {
   changePage(view.currentPage);
 }
 
-show(home());
+changePage("home");

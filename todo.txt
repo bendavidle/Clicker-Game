@@ -1,0 +1,13 @@
+TODOS:
+
+- Travel energy to limit travel and promote resting when available.
+- Inventory / Items.
+- Figure out equipment and stats
+- Stats page
+- Come up with settings (Cheats etc.)
+- Shop
+- Balancing / Exp curve
+- Character identities
+- Sticky HP Footer / Travel Energy
+- Disable buttons in char select excluding settings.
+- Find assets for items and classes
