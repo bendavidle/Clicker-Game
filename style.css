@@ -238,3 +238,12 @@ body {
 .dangerous {
   color: rgb(255, 0, 0);
 }
+
+.disabled {
+  color: grey;
+}
+
+.stats,
+.settings {
+  margin: 2rem;
+}

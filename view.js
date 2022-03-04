@@ -6,8 +6,8 @@ function header() {
       ${location}
       ${gold}
       <div class="tab" onclick="changePage('home')">Home</div>
-      <div class="tab" onclick="changePage('stats')">Stats</div>
-      <div class="tab" onclick="changePage('settings')">Settings</div>
+      <div class="tab  ${game.classChosen ? "" : "disabled"}" onclick="${game.classChosen ? "changePage('stats')" : ""} ">Stats</div>
+      <div class="tab  ${game.classChosen ? "" : "disabled"}" onclick="${game.classChosen ? "changePage('settings')" : ""}">Settings</div>
     </div>
     `;
   return html;
@@ -80,7 +80,10 @@ function home() {
 function stats() {
   let html = /*HTML*/ `
     <div class="stats">
-      <p>This is stats</p>
+      <p>Health: ${game.stats.health} / ${game.stats.maxHealth}</p>
+      <p>Energy: ${game.stats.energy} / ${game.stats.maxEnergy}</p>
+      <p>Attack: ${game.chosenCharacter.baseAttack}</p>
+      <p>Current Exp: ${game.stats.xp} @ lvl ${game.stats.level} </p>
     </div>
   `;
   return html;
@@ -89,7 +92,12 @@ function stats() {
 function settings() {
   let html = /*HTML*/ `
     <div class="settings">
-      <p>This is settings</p>
+      <h1>Cheats</h1>
+      <div>
+      <p>Set level: </p>
+        <input id="levelCheat" type="number"/>
+        <button onclick="setLevel()">Set Level</button>
+      </div>
     </div>
   `;
   return html;
@@ -141,7 +149,7 @@ function battle() {
       <div class="enemy" onclick="setBattle(${enemy.id})">
         <p>${enemy.name}</p>
         <p>HP: ${enemy.maxhp}</p>
-        <p>Lvl: ${enemy.requiredLevel}</p>
+        <p>Lvl: ${enemy.level}</p>
         <p>Exp: ${enemy.exp}</p>
       </div>
     `;

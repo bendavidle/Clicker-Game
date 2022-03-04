@@ -1,3 +1,6 @@
+//initiliaze
+game.experienceList = initExp();
+
 function selectChar(id) {
   let character = getCharacterById(id);
   game.classChosen = true;
@@ -51,8 +54,9 @@ function attack() {
     game.stats.gold += gold;
     game.stats.xp += game.currentEnemy.exp;
     game.currentEnemy.hp = 0;
-    renderCurrentPage();
     game.currentEnemy.hp = game.currentEnemy.maxhp;
+    game.stats.level = calculateLevel();
+
     changePage("home");
 
     setTimeout(() => {
@@ -71,7 +75,7 @@ function enemyTurn() {
   if (game.stats.health - attack <= 0) {
     let lostGold = game.stats.gold / 2;
     game.stats.health = 0;
-    game.stats.gold -= lostGold;
+    game.stats.gold -= Math.floor(lostGold);
     changePage("home");
     game.currentEnemy.hp = game.currentEnemy.maxhp;
     game.stats.health = game.stats.maxHealth;
@@ -82,6 +86,21 @@ function enemyTurn() {
     game.stats.health -= attack;
   }
   renderCurrentPage();
+}
+
+function calculateLevel() {
+  let currentLevel = game.stats.level;
+  for (let i = 0; i < game.experienceList.length; i++) {
+    const expRequired = game.experienceList[i];
+    if (game.stats.xp <= expRequired) {
+      setTimeout(() => {
+        alert(`You level up!`);
+      }, 120);
+      game.chosenCharacter.baseAttack += i;
+      game.chosenCharacter.maxHealth += i * 4;
+      return i;
+    }
+  }
 }
 
 function rest(danger) {
@@ -145,4 +164,24 @@ function randomNumber(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+function initExp() {
+  let expReqs = [];
+  let expReq = 30;
+  expReqs.push(expReq);
+  for (var i = 1; i < 1024; i++) {
+    expReq += i / 2 + Math.round(expReq * 0.0001);
+    expReqs.push(expReqs[i - 1] + Math.ceil(expReq));
+  }
+
+  return expReqs;
+}
+
+function setLevel() {
+  let level = document.getElementById("levelCheat").value;
+  game.stats.level = level;
+  game.chosenCharacter.baseAttack += Math.ceil(parseInt(level * 2));
+  game.stats.maxHealth += parseInt(level) * 4;
+  renderCurrentPage();
 }
